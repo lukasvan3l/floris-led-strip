@@ -31,7 +31,73 @@ void loop() {
 //  rainbowCycle(20);
 //  theaterChaseRainbow(50);
 
+
+    police1(10, 50);
+
+    police2(15, 200);
+
     knightRider(5, 20);
+
+    delay(5000);
+}
+
+void police2(int count, int duration) {
+  uint32_t blue = strip.Color(0, 0, 255); 
+  uint32_t red = strip.Color(255,0,0);
+  uint32_t off = strip.Color(0,0,0);
+
+  for (int j = 0; j < count; j++) {
+    for (int i = 0; i < NUM_LIGHTS; i++) {
+      if (i % 2 == 0) {
+        strip.setPixelColor(i, blue);
+      } else {
+        strip.setPixelColor(i, off);
+      }
+    }
+    strip.show();
+    delay(duration);
+    for (int i = 0; i < NUM_LIGHTS; i++) {
+      if (i % 2 == 0) {
+        strip.setPixelColor(i, off);
+      } else {
+        strip.setPixelColor(i, red);
+      }
+    }
+    strip.show();
+    delay(duration);
+  }
+
+  allOff();
+}
+
+void police1(int count, int duration) {
+  uint32_t blue = strip.Color(0, 0, 255); 
+  uint32_t red = strip.Color(255,0,0);
+
+  for (int i = 0; i < count; i++) {
+    police1Blink(0, red, duration*2);
+    delay(duration);
+    police1Blink(0, red, duration*2);
+    delay(duration);
+    police1Blink(75, blue, duration*2);
+    delay(duration);
+    police1Blink(75, blue, duration*2);
+    delay(duration);
+  }
+
+  allOff();
+}
+
+void police1Blink(int startLed, uint32_t color, int duration) {
+  for (int i = startLed; i < startLed + 75; i++) {
+    strip.setPixelColor(i, color);
+  }
+  strip.show();
+  delay(duration);
+  for (int i = startLed; i < startLed + 75; i++) {
+    strip.setPixelColor(i, strip.Color(0, 0, 0));
+  }
+  strip.show();
 }
 
 void knightRider(int loops, int timer) {
@@ -59,12 +125,15 @@ void knightRider(int loops, int timer) {
             delay(timer*2);
         }
     }
-    
-    // Turn them off
-    for( int i = 0; i<NUM_LIGHTS; i++){
-        strip.setPixelColor(i, low);
-        strip.show();
-    }   
+
+    allOff();
+}
+
+void allOff() {
+  for( int i = 0; i<NUM_LIGHTS; i++){
+    strip.setPixelColor(i, strip.Color(0, 0, 0));
+  }   
+  strip.show();
 }
 
 // i = 0 - 7, for the pixels in KITT's ledbar, represented by 19 neopixels
